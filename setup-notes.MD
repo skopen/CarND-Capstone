@@ -1,4 +1,4 @@
-cd ~/catkin_ws
-source devel/setup.bash
-roslaunch simple_arm robot_spawn.launch
-rosrun simple_arm simple_mover
+- cd ~/catkin_ws
+- source devel/setup.bash
+- roslaunch simple_arm robot_spawn.launch
+- rosrun simple_arm simple_mover
