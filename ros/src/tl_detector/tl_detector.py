@@ -101,6 +101,7 @@ class TLDetector(object):
 
         """
         #TODO implement
+        # Test comment...
         return 0
 
     def get_light_state(self, light):
