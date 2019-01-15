@@ -124,7 +124,7 @@ class DBWNode(object):
             rospy.logerr(throttle)
             rospy.logerr(brake)
             rospy.logerr(steer)
-            rospy.logerr('=============================')
+            rospy.logerr('==============================')
 
         tcmd = ThrottleCmd()
         tcmd.enable = True
