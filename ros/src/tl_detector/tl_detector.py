@@ -12,7 +12,7 @@ import cv2
 import yaml
 from scipy.spatial import KDTree
 
-STATE_COUNT_THRESHOLD = 3
+STATE_COUNT_THRESHOLD = 3 # 1 for testing, change back to 3
 
 class TLDetector(object):
     def __init__(self):
@@ -124,10 +124,8 @@ class TLDetector(object):
         """
 
         # For testing, just return the light state
-
-        if self.config['is_site'] == True:
+        if self.config['is_site'] == False:
             return light.state
-
 
         if(not self.has_image):
             self.prev_light_loc = None
