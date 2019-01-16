@@ -123,7 +123,7 @@ class TLDetector(object):
 
         """
 
-        # For testing, just return the light state
+        # For simulator testing, just return the light state
         if self.config['is_site'] == False:
             return light.state
 
