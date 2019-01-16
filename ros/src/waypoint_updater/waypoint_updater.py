@@ -9,6 +9,8 @@ import numpy as np
 
 import math
 
+RATE = 50
+
 '''
 This node will publish waypoints from the car's current position to some `x` distance ahead.
 
@@ -25,7 +27,7 @@ TODO (for Yousuf and Aaron): Stopline location for each traffic light.
 '''
 
 LOOKAHEAD_WPS = 200 # Number of waypoints we will publish. You can change this number
-MAX_DECEL = 1.
+MAX_DECEL = 0.6
 
 class WaypointUpdater(object):
     def __init__(self):
@@ -51,7 +53,7 @@ class WaypointUpdater(object):
         self.loop()
 
     def loop(self):
-        rate = rospy.Rate(5)
+        rate = rospy.Rate(RATE)
         while not rospy.is_shutdown():
             if self.pose and self.base_waypoints:
                 # get closest waypoint
@@ -129,6 +131,7 @@ class WaypointUpdater(object):
         self.final_waypoints_pub.publish(waypoints)
 
     def traffic_cb(self, msg):
+        rospy.logerr('GOT RED TRAFFIC LIGHT DATA...')
         self.stopline_wp_idx = msg.data
 
     def obstacle_cb(self, msg):
