@@ -9,7 +9,7 @@ import numpy as np
 
 import math
 
-RATE = 50
+RATE = 10
 
 '''
 This node will publish waypoints from the car's current position to some `x` distance ahead.
@@ -26,7 +26,7 @@ as well as to verify your TL classifier.
 TODO (for Yousuf and Aaron): Stopline location for each traffic light.
 '''
 
-LOOKAHEAD_WPS = 200 # Number of waypoints we will publish. You can change this number
+LOOKAHEAD_WPS = 50 # Number of waypoints we will publish. You can change this number
 MAX_DECEL = 0.6
 
 class WaypointUpdater(object):
@@ -131,7 +131,7 @@ class WaypointUpdater(object):
         self.final_waypoints_pub.publish(waypoints)
 
     def traffic_cb(self, msg):
-        rospy.logerr('GOT RED TRAFFIC LIGHT DATA...')
+        #rospy.logerr('GOT RED TRAFFIC LIGHT DATA...')
         self.stopline_wp_idx = msg.data
 
     def obstacle_cb(self, msg):

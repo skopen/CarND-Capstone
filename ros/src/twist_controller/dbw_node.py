@@ -8,7 +8,7 @@ import math
 
 from twist_controller import Controller
 
-RATE = 50
+RATE = 10
 
 '''
 You can build this node only after you have built (or partially built) the `waypoint_updater` node.
