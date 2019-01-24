@@ -24,6 +24,9 @@ class TLDetector(object):
         self.lights = []
         self.waypoints_2d = None
         self.waypoint_tree = None
+        
+        # When this variable is true, traffic light status is used. If false, classifier is used.
+        self.use_classifier = False
 
         sub1 = rospy.Subscriber('/current_pose', PoseStamped, self.pose_cb)
         sub2 = rospy.Subscriber('/base_waypoints', Lane, self.waypoints_cb)
@@ -124,7 +127,7 @@ class TLDetector(object):
         """
 
         # For simulator testing, just return the light state
-        if self.config['is_site'] == False:
+        if self.config['is_site'] == False and self.use_classifier == False:
             return light.state
 
         if(not self.has_image):
