@@ -79,6 +79,8 @@ class TLDetector(object):
         """
         self.has_image = True
         self.camera_image = msg
+        # Call classifier when image is received. When merging branches together, this function should be called from get_light_state()
+        self.get_classification()
         light_wp, state = self.process_traffic_lights()
 
         '''
@@ -137,6 +139,20 @@ class TLDetector(object):
         cv_image = self.bridge.imgmsg_to_cv2(self.camera_image, "bgr8")
 
         #Get classification
+        return self.light_classifier.get_classification(cv_image)
+    
+    def get_classification(self):
+        """Determines the current color of the traffic light
+
+        Returns:
+            int: ID of traffic light color (specified in styx_msgs/TrafficLight)
+
+        """
+        if not self.has_image:
+            self.prev_light_loc = None
+            return False
+        cv_image = self.bridge.imgmsg_to_cv2(self.camera_image, "rgb8")
+        # Get classification
         return self.light_classifier.get_classification(cv_image)
 
     def process_traffic_lights(self):
