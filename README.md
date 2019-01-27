@@ -8,11 +8,11 @@ Team: MissionPeak
 
 | Name  | Location  | LinkedIn  |
 |:------------- |:---------------| -------------|
-| Ahsan Habib (Team Lead)    | Santa Clara, CA |     [linkedin.com/in/Ahsan-Habib]    (https://www.linkedin.com/in/habibahsan/) |
-| Krishna  Koravadi     | Michigan        |           [linkedin.com/in/Krishna-Koravadi](https://www.linkedin.com/in/koravadi/)|
-| Mahmoud A Selim | Egypt       |            [linkedin.com/in/Mahmoud-Selim]() |
-| Sarang Kulkarni | San Jose, CA       |            [linkedin.com/in/Sarang-Kulkarni](https://www.linkedin.com/in/sarangkulkarni/) |
-| Vincent Barrault | Frankfurt, Germany       |      [linkedin.com/in/vincent-barrault]      (https://www.linkedin.com/in/vincent-barrault-b41a065a/) |
+| Ahsan Habib (Team Lead)    | Santa Clara, CA | [https://www.linkedin.com/in/habibahsan] (https://www.linkedin.com/in/habibahsan/) |
+| Krishna  Koravadi     | Michigan  | [https://www.linkedin.com/in/koravadi](https://www.linkedin.com/in/koravadi/)|
+| Mahmoud A Selim | Egypt       |            [https://www.linkedin.com/in/mahmoud-selim]() |
+| Sarang Kulkarni | San Jose, CA       |     [https://www.linkedin.com/in/sarangkulkarni/](https://www.linkedin.com/in/sarangkulkarni/) |
+| Vincent Barrault | Frankfurt, Germany | [https://www.linkedin.com/in/vincent-barrault] (https://www.linkedin.com/in/vincent-barrault-b41a065a/) |
 
 
 Please use **one** of the two installation options, either native **or** docker installation.
