@@ -9,6 +9,7 @@ from styx_msgs.msg import TrafficLight
 
 
 class TLClassifier(object):
+    # In Initialization, a boolean argument "is_site" should be added so that the classifier chooses which model it should use (simulation or site model)
     def __init__(self):
         
         # Choose which model to work with
