@@ -7,12 +7,12 @@ Team: MissionPeak
 
 
 | Name  | Location  | LinkedIn  |
-|:------------- |:---------------| -------------|
-| Ahsan Habib (Team Lead)    | Santa Clara, CA | [https://www.linkedin.com/in/habibahsan] (https://www.linkedin.com/in/habibahsan/) |
+|:------------- |:---------------|:-------------|
+| Ahsan Habib (Team Lead)    | Santa Clara, CA | [https://www.linkedin.com/in/habibahsan](https://www.linkedin.com/in/habibahsan/) |
 | Krishna  Koravadi     | Michigan  | [https://www.linkedin.com/in/koravadi](https://www.linkedin.com/in/koravadi/)|
 | Mahmoud A Selim | Egypt       |            [https://www.linkedin.com/in/mahmoud-selim]() |
 | Sarang Kulkarni | San Jose, CA       |     [https://www.linkedin.com/in/sarangkulkarni/](https://www.linkedin.com/in/sarangkulkarni/) |
-| Vincent Barrault | Frankfurt, Germany | [https://www.linkedin.com/in/vincent-barrault] (https://www.linkedin.com/in/vincent-barrault-b41a065a/) |
+| Vincent Barrault | Frankfurt, Germany | [https://www.linkedin.com/in/vincent-barrault](https://www.linkedin.com/in/vincent-barrault-b41a065a/) |
 
 
 Please use **one** of the two installation options, either native **or** docker installation.
