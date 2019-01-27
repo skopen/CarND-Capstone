@@ -25,8 +25,11 @@ class TLDetector(object):
         self.waypoints_2d = None
         self.waypoint_tree = None
         
-        # When this variable is true, traffic light status is used. If false, classifier is used.
+        # When use_classifier is true, traffic light status is used. If false, classifier is used.
         self.use_classifier = False
+        self.counter_classifier = 0
+        self.classifier_state = TrafficLight.UNKNOWN
+        self.last_classifier_state = TrafficLight.UNKNOWN
 
         sub1 = rospy.Subscriber('/current_pose', PoseStamped, self.pose_cb)
         sub2 = rospy.Subscriber('/base_waypoints', Lane, self.waypoints_cb)
@@ -77,10 +80,40 @@ class TLDetector(object):
             msg (Image): image from car-mounted camera
 
         """
+        MIN_COUNTER = 1
+        
         self.has_image = True
         self.camera_image = msg
+        
         # Call classifier when image is received. When merging branches together, this function should be called from get_light_state()
-        self.get_classification()
+        last_detected_state = self.get_classification()
+        if last_detected_state == self.last_classifier_state:
+            self.counter_classifier += 1
+        else:
+            self.counter_classifier = 0
+        
+        self.last_classifier_state = last_detected_state
+        
+        
+        rospy.loginfo(self.counter_classifier)
+        #rospy.loginfo(last_detected_state)
+        
+        # Check how many times in the row the same color was detected. If it's more or equal to MIN_COUNTER, we update classifier_state with the actual color detected.
+        if self.last_classifier_state == TrafficLight.GREEN and self.counter_classifier == MIN_COUNTER:
+            rospy.loginfo('Green light')
+            self.classifier_state = self.last_classifier_state
+        elif self.last_classifier_state == TrafficLight.RED and self.counter_classifier == MIN_COUNTER:
+            rospy.loginfo('Red light')
+            self.classifier_state = self.last_classifier_state
+        elif self.last_classifier_state == TrafficLight.YELLOW and self.counter_classifier == MIN_COUNTER:
+            rospy.loginfo('Yellow light')
+            self.classifier_state = self.last_classifier_state
+        elif self.last_classifier_state == TrafficLight.UNKNOWN and self.counter_classifier == MIN_COUNTER:
+            rospy.loginfo('No traffic light detected')
+            self.classifier_state = self.last_classifier_state
+        
+        
+        
         light_wp, state = self.process_traffic_lights()
 
         '''
