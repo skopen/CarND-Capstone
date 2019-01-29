@@ -48,7 +48,7 @@ class TLClassifier(object):
         # Determines the color of the traffic light in the image
         
         # Sets the minimum score (or desired probability) that the classifier's prediction should satisfy for considering the prediction as reliable.
-        THRESHOLD_SCORE = 0.7
+        THRESHOLD_SCORE = 0.85
         image_np = np.asarray(image, dtype="uint8")
         image_np_expanded = np.expand_dims(image_np, axis=0)
 
