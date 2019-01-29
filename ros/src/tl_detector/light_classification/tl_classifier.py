@@ -13,8 +13,7 @@ class TLClassifier(object):
     def __init__(self):
         
         # Choose which model to work with
-        # MODEL_NAME = 'light_classification/traffic_models/ssdlite_mobilenet_v2_coco_2018_05_09'
-        MODEL_NAME = 'light_classification/traffic_models/sim_frozen_graph'
+        MODEL_NAME = 'light_classification/traffic_models/site_frozen_graph'
         
         # Store the last detected color (used for debug purposes/printing messages, could be deleted later)
         self.detected_color = None

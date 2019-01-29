@@ -119,7 +119,7 @@ class TLDetector(object):
         self.last_classifier_state = last_detected_state
         
         
-        rospy.loginfo(self.counter_classifier)
+        #rospy.loginfo(self.counter_classifier)
         #rospy.loginfo(last_detected_state)
         
         # Check how many times in the row the same color was detected. If it's more or equal to MIN_COUNTER, we update classifier_state with the actual color detected.
