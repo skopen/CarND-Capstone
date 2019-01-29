@@ -9,7 +9,7 @@ Team: MissionPeak
 | Name  | Location  | LinkedIn  |
 |:------------- |:---------------|:-------------|
 | Ahsan Habib (Team Lead)    | Santa Clara, CA | [https://www.linkedin.com/in/habibahsan](https://www.linkedin.com/in/habibahsan/) |
-| Krishna  Koravadi     | Michigan  | [https://www.linkedin.com/in/koravadi](https://www.linkedin.com/in/koravadi/)|
+| Krishna  Koravadi     | Rochester Hills MI| [https://www.linkedin.com/in/koravadi](https://www.linkedin.com/in/koravadi/)|
 | Mahmoud A Selim | Egypt       |            [https://www.linkedin.com/in/mahmoud-selim](https://www.linkedin.com/in/mahmoud-selim-325b49149/) |
 | Sarang Kulkarni | San Jose, CA       |     [https://www.linkedin.com/in/sarangkulkarni/](https://www.linkedin.com/in/sarangkulkarni/) |
 | Vincent Barrault | Frankfurt, Germany | [https://www.linkedin.com/in/vincent-barrault](https://www.linkedin.com/in/vincent-barrault-b41a065a/) |
