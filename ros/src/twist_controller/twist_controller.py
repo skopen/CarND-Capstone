@@ -50,6 +50,7 @@ class Controller(object):
 
         current_time = rospy.get_time()
         sample_time = current_time - self.last_time
+        sample_time=0.2
         self.last_time = current_time
 
         throttle = self.throttle_controller.step(vel_error, sample_time)
@@ -57,7 +58,7 @@ class Controller(object):
 
         if linear_vel == 0. and current_vel < 0.1:
             throttle = 0
-            brake = 400 #N*m - to hld th ecar in place if we are stopped at a light. Acceleration ~ 1m/s^2
+            brake = 700 #N*m - to hld th ecar in place if we are stopped at a light. Acceleration ~ 1m/s^2
 
         elif throttle < .1 and vel_error < 0:
             throttle = 0

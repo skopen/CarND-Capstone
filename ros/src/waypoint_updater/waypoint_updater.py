@@ -28,6 +28,8 @@ TODO (for Yousuf and Aaron): Stopline location for each traffic light.
 
 LOOKAHEAD_WPS = 50 # Number of waypoints we will publish. You can change this number
 MAX_DECEL = 0.6
+MAX_DEC =5# m/sec**2
+KPH_TO_MS=0.277778
 
 class WaypointUpdater(object):
     def __init__(self):
@@ -49,13 +51,21 @@ class WaypointUpdater(object):
         self.waypoints_2d = None
         self.waypoint_tree = None
         self.stopline_wp_idx = -1
-
+        self.max_speed=rospy.get_param('/waypoint_loader/velocity')*KPH_TO_MS
+        rospy.loginfo("max speed %f",self.max_speed)
+        self.max_stopping_dist =(self.max_speed**2)/(2*MAX_DEC)  
+        # http://www.amsi.org.au/teacher_modules/pdfs/Maths_delivers/Braking5.pdf
+        # v^2=u^2+2*a*d 
+        #d= u^2/(2*a)when v=0 and a=-ve
+        # distance due to planning delay d= currentspeed*0.2  
+        self.max_stopping_dist+=self.max_speed*0.2
+        
         self.loop()
 
     def loop(self):
         rate = rospy.Rate(RATE)
         while not rospy.is_shutdown():
-            if self.pose and self.base_waypoints:
+            if not None in (self.pose,self.base_waypoints,self.waypoint_tree):
                 # get closest waypoint
                 # closest_waypoint_idx = self.get_closest_waypoint_idx()
                 self.publish_waypoints()
@@ -84,16 +94,22 @@ class WaypointUpdater(object):
 
     def publish_waypoints(self):
         final_lane = self.generate_lane()
+        rospy.loginfo("next vel ref %f",self.get_waypoint_velocity(final_lane.waypoints[0]))
         self.final_waypoints_pub.publish(final_lane)
 
     def generate_lane(self):
         lane = Lane()
 
         closest_idx = self.get_closest_waypoint_idx()
+        rospy.loginfo("closeset wp idx %d",closest_idx)
+        rospy.loginfo("tl wp idx %d",self.stopline_wp_idx)
         farthest_idx = closest_idx + LOOKAHEAD_WPS
         base_waypoints = self.base_waypoints.waypoints[closest_idx:farthest_idx]
-
-        if self.stopline_wp_idx == -1 or (self.stopline_wp_idx >= farthest_idx):
+        distance2tl=self.max_stopping_dist
+        if self.stopline_wp_idx != -1:
+            distance2tl=self.distance_bw_wp(base_waypoints[0],self.base_waypoints.waypoints[self.stopline_wp_idx])
+        
+        if self.stopline_wp_idx == -1 or (self.stopline_wp_idx >= farthest_idx) or (distance2tl>=self.max_stopping_dist):
             lane.waypoints = base_waypoints
         else:
             lane.waypoints = self.decelerate_waypoints(base_waypoints, closest_idx)
@@ -107,13 +123,20 @@ class WaypointUpdater(object):
             p = Waypoint()
             p.pose = wp.pose
 
-            stop_idx = max(self.stopline_wp_idx - closest_idx - 2, 0)  # Two waypoints back from line so front of car stops at line
+            #stop_idx = max(self.stopline_wp_idx - closest_idx - 2, 0)  # Two waypoints back from line so front of car stops at line
+            stop_idx = max(self.stopline_wp_idx - closest_idx , 0)
+            #rospy.loginfo("stop idx %d",stop_idx)
             dist = self.distance(waypoints, i, stop_idx)
+            #rospy.loginfo("distance %f",dist)
+            dist-=1.5 # add 1m so that car stop at line
+            if dist<0:
+                dist=0
             vel = math.sqrt(2 * MAX_DECEL * dist)
             if vel < 1.:
                 vel = 0.
 
             p.twist.twist.linear.x = min(vel, wp.twist.twist.linear.x)
+            #rospy.loginfo("velocity ref %f",p.twist.twist.linear.x)
             temp.append(p)
 
         return temp
@@ -133,6 +156,7 @@ class WaypointUpdater(object):
     def traffic_cb(self, msg):
         #rospy.logerr('GOT RED TRAFFIC LIGHT DATA...')
         self.stopline_wp_idx = msg.data
+        #rospy.loginfo("traffic light wp %d",self.stopline_wp_idx)
 
     def obstacle_cb(self, msg):
         # TODO: Callback for /obstacle_waypoint message. We will implement it later
@@ -151,7 +175,12 @@ class WaypointUpdater(object):
             dist += dl(waypoints[wp1].pose.pose.position, waypoints[i].pose.pose.position)
             wp1 = i
         return dist
-
+    
+    def distance_bw_wp(self, wp1,wp2):
+        dist =0
+        dl = lambda a, b: math.sqrt((a.x-b.x)**2 + (a.y-b.y)**2  + (a.z-b.z)**2)
+        dist += dl(wp1.pose.pose.position, wp2.pose.pose.position)
+        return dist
 
 if __name__ == '__main__':
     try:
