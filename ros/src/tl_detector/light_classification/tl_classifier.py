@@ -25,6 +25,8 @@ class TLClassifier(object):
         self.width = 0
         self.height = 0
         self.channels = 3
+        self.retrieve_images = False
+        self.count_ = 0
 
         # Load a frozen model into memory
         self.detection_graph = tf.Graph()
@@ -43,12 +45,15 @@ class TLClassifier(object):
             self.detection_scores = self.detection_graph.get_tensor_by_name('detection_scores:0')
             self.detection_classes = self.detection_graph.get_tensor_by_name('detection_classes:0')
             self.num_detections = self.detection_graph.get_tensor_by_name('num_detections:0')
+            
+            if self.retrieve_images == True:
+                self.create_directory()
 
     def get_classification(self, image):
         # Determines the color of the traffic light in the image
         
         # Sets the minimum score (or desired probability) that the classifier's prediction should satisfy for considering the prediction as reliable.
-        THRESHOLD_SCORE = 0.8
+        THRESHOLD_SCORE = 0.45
         image_np = np.asarray(image, dtype="uint8")
         image_np_expanded = np.expand_dims(image_np, axis=0)
 
@@ -62,32 +67,63 @@ class TLClassifier(object):
         num = np.squeeze(num)
         
         # Print detected classes and their score for debugging
-        #rospy.loginfo(boxes)
-        #rospy.loginfo(classes[:3])
-        #rospy.loginfo(scores[:3])
+        if classes[0] == 1:
+            color = "Green"
+            rospy.loginfo("%s: %f", color, scores[0])
+        elif classes[0] == 2:
+            color = "Red"
+            rospy.loginfo("%s: %f", color, scores[0])
+        if classes[0] == 3:
+            color = "Yellow"
+            rospy.loginfo("%s: %f", color, scores[0])
+        
+        if self.retrieve_images == True:
+
+            self.count_ = self.count_ + 1
+            font = cv2.FONT_HERSHEY_TRIPLEX
+            cv2.putText(image,color,(10,460), font, 3,(255,255,255),2,cv2.LINE_AA)
+            cv2.putText(image,"{:.2f}".format(scores[0]),(10,570), font, 3,(255,255,255),2,cv2.LINE_AA)
+            img_output_name = '{}.jpg'.format(self.count_)
         
         # Check the nature (green, red, yellow?) of the detected class and check its score. If the score is less than THRESHOLD_SCORE (60% in initial implementation), we consider that the detected class is not correct and the classifier should return "unknown".
         if classes[0] == 1 and scores[0] > THRESHOLD_SCORE:
+            if self.retrieve_images == True:
+                img_output_path = os.path.join('images/green', img_output_name)
+                cv2.imwrite(img_output_path, image);
             if self.detected_color != classes[0]:
                 self.detected_color = classes[0]
-                #rospy.loginfo('Green light')
-                #cv2.imwrite('green.jpg', image_np)
             return TrafficLight.GREEN
         elif classes[0] == 2  and scores[0] > THRESHOLD_SCORE:
+            if self.retrieve_images == True:
+                img_output_path = os.path.join('images/red', img_output_name)
+                cv2.imwrite(img_output_path, image);
             if self.detected_color != classes[0]:
                 self.detected_color = classes[0]
-                #rospy.loginfo('Red light')
-                #cv2.imwrite('red.jpg', image_np)
             return TrafficLight.RED
         elif classes[0] == 3  and scores[0] > THRESHOLD_SCORE:
+            if self.retrieve_images == True:
+                img_output_path = os.path.join('images/yellow', img_output_name)
+                cv2.imwrite(img_output_path, image);
             if self.detected_color != classes[0]:
                 self.detected_color = classes[0]
-                #rospy.loginfo('Yellow light')
-                #cv2.imwrite('yellow.jpg', image_np)
             return TrafficLight.YELLOW
         else:
+            if self.retrieve_images == True:
+                img_output_path = os.path.join('images/unknown', img_output_name)
+                cv2.imwrite(img_output_path, image);
             if self.detected_color != classes[0]:
                 self.detected_color = classes[0]
-                #rospy.loginfo('Unknown')
             return TrafficLight.UNKNOWN
+        
+    def create_directory(self):
+        if not os.path.exists("images"):
+            os.makedirs("images")
+        if not os.path.exists("images/green"):
+            os.makedirs("images/green")
+        if not os.path.exists("images/red"):
+            os.makedirs("images/red")
+        if not os.path.exists("images/yellow"):
+            os.makedirs("images/yellow")
+        if not os.path.exists("images/unknown"):
+            os.makedirs("images/unknown")
 
