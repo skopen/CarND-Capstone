@@ -9,7 +9,7 @@ This is the project repo for the final project of the Udacity Self-Driving Car N
 | Name  | Location  | Profile  |
 |:------------- |:---------------|:---------------------|
 | Ahsan Habib <br> (Team Lead)    | Santa Clara, CA | <img src="imgs/ahsan.jpg" alt="Ahsan" height= "200" width="200"/> <br> [https://www.linkedin.com/in/habibahsan](https://www.linkedin.com/in/habibahsan/) |
-| Krishna  Koravadi     | Rochester Hills MI|  <img src="imgs/krishna.jpg" alt="Krishna" height= "200" width="200"/> <br> [https://www.linkedin.com/in/koravadi](https://www.linkedin.com/in/koravadi/)|
+| Krishna  Koravadi     | Rochester Hills, MI|  <img src="imgs/krishna.jpg" alt="Krishna" height= "200" width="200"/> <br> [https://www.linkedin.com/in/koravadi](https://www.linkedin.com/in/koravadi/)|
 | Mahmoud A Selim | Egypt       |     <img src="imgs/mahmoud.jpg" alt="Mahmoud" height= "200" width="200"/>      <br>    [https://www.linkedin.com/in/mahmoud-selim](https://www.linkedin.com/in/mahmoud-selim-325b49149/) |
 | Sarang Kulkarni | San Jose, CA       |    <img src="imgs/sarang.jpg" alt="Sarang" height= "200" width="200"/>  <br>  [https://www.linkedin.com/in/sarangkulkarni/](https://www.linkedin.com/in/sarangkulkarni/) |
 | Vincent Barrault | Frankfurt, Germany |  <img src="imgs/vincent.jpg" alt="Vincent" height= "200" width="200"/> <br>  [https://www.linkedin.com/in/vincent-barrault](https://www.linkedin.com/in/vincent-barrault-b41a065a/) |
