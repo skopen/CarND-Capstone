@@ -105,6 +105,8 @@ class WaypointUpdater(object):
         rospy.loginfo("tl wp idx %d",self.stopline_wp_idx)
         farthest_idx = closest_idx + LOOKAHEAD_WPS
         base_waypoints = self.base_waypoints.waypoints[closest_idx:farthest_idx]
+        rospy.loginfo("length of waypoints %d",len(base_waypoints))
+ 
         distance2tl=self.max_stopping_dist
         if self.stopline_wp_idx != -1:
             distance2tl=self.distance_bw_wp(base_waypoints[0],self.base_waypoints.waypoints[self.stopline_wp_idx])
