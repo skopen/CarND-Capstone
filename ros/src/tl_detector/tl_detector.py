@@ -104,7 +104,7 @@ class TLDetector(object):
             msg (Image): image from car-mounted camera
 
         """
-        MIN_COUNTER = 1
+        MIN_COUNTER = 3
         
         self.has_image = True
         self.camera_image = msg
@@ -124,17 +124,21 @@ class TLDetector(object):
         
         # Check how many times in the row the same color was detected. If it's more or equal to MIN_COUNTER, we update classifier_state with the actual color detected.
         if self.last_classifier_state == TrafficLight.GREEN and self.counter_classifier == MIN_COUNTER:
-            rospy.loginfo('Green light')
-            self.classifier_state = self.last_classifier_state
+            if self.classifier_state != self.last_classifier_state:
+                rospy.loginfo('Green light')
+                self.classifier_state = self.last_classifier_state
         elif self.last_classifier_state == TrafficLight.RED and self.counter_classifier == MIN_COUNTER:
-            rospy.loginfo('Red light')
-            self.classifier_state = self.last_classifier_state
+            if self.classifier_state != self.last_classifier_state:
+                rospy.loginfo('Red light')
+                self.classifier_state = self.last_classifier_state
         elif self.last_classifier_state == TrafficLight.YELLOW and self.counter_classifier == MIN_COUNTER:
-            rospy.loginfo('Yellow light')
-            self.classifier_state = self.last_classifier_state
+            if self.classifier_state != self.last_classifier_state:
+                rospy.loginfo('Yellow light')
+                self.classifier_state = self.last_classifier_state
         elif self.last_classifier_state == TrafficLight.UNKNOWN and self.counter_classifier == MIN_COUNTER:
-            rospy.loginfo('No traffic light detected')
-            self.classifier_state = self.last_classifier_state
+            if self.classifier_state != self.last_classifier_state:
+                rospy.loginfo('No traffic light detected')
+                self.classifier_state = self.last_classifier_state
 
         
         light_wp, state = self.process_traffic_lights()
