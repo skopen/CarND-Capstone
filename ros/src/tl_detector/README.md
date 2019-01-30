@@ -15,7 +15,7 @@ faster_rncc is very accurate but is very long to process images. ssd_mobilenet_v
 A dataset of ~1200 images has been gathered (mainly from the ROS bag provided by Udacity) and labeled using [labelimg.py](https://github.com/tzutalin/labelImg). 80% were used for training, 20% for testing.
 
 Using tensorflow-gpu, the model has been trained locally on a computer equipped with a NVIDIA GPU (GTX 1050) during around 16000 steps, till the loss is almost always under 2:
-![Loss](https://raw.githubusercontent.com/skopen/CarND-Capstone/master/imgs/loss_inception_model.png)
+![Loss](https://raw.githubusercontent.com/skopen/CarND-Capstone/master/imgs/loss_inception_model.jpg)
 
 ## Code
 
