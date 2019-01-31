@@ -14,6 +14,14 @@ This is the project repo for the final project of the Udacity Self-Driving Car N
 | Sarang Kulkarni | San Jose, CA       |    <img src="imgs/sarang.jpg" alt="Sarang" height= "200" width="200"/>  <br>  [https://www.linkedin.com/in/sarangkulkarni/](https://www.linkedin.com/in/sarangkulkarni/) |
 | Vincent Barrault | Frankfurt, Germany |  <img src="imgs/vincent.jpg" alt="Vincent" height= "200" width="200"/> <br>  [https://www.linkedin.com/in/vincent-barrault](https://www.linkedin.com/in/vincent-barrault-b41a065a/) |
 
+###Simulation Video
+
+Here is the simulation run on highway that uses waypoint path planning, PID controller for controlling speed, steering, and throttle. In this simulation, traffic light waypoint is used to detect the status of light and the car is controlled to stop on red light and go on green.
+
+[![Capstone project run](imgs/capstone.jpeg)](https://youtu.be/8Jk_cnvKQe4)
+
+
+
 
 Please use **one** of the two installation options, either native **or** docker installation.
 
