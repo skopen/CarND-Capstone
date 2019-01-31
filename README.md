@@ -23,6 +23,18 @@ Here is the simulation run on highway that uses waypoint path planning, PID cont
 [![Capstone project run](imgs/capstone.jpeg )](https://youtu.be/8Jk_cnvKQe4)
 
 Click on the video to see a complete run.
+Note: Our code is able to drive the vehicle and complete the highway loop with camera turned OFF in the simulator, when the camera is turned ON with no classification runnning and no suscription to the camera data around 4000 waypoint index the vehcile goes out of control. We think that this may be due to less computation prower and priority of the node execution issue.
+
+Here is the simulation run at test site that uses waypoint path planning, PID controller for controlling speed, steering, and throttle.
+
+[![Capstone project run](imgs/capstone.jpeg )](http://youtu.be/T-opXDjLGu0)
+
+Click on the video to see a complete run.
+Note: To make the simulation work for the test site, we need to add these two lines to the site.launch file, so that all the nodes get the vehicle position and velocity from the simulator.
+'''
+    <!-- Simulator Bridge -->
+    <include file="$(find styx)/launch/server.launch" />
+'''
 
 ## Classifier
 
