@@ -10,10 +10,13 @@ from styx_msgs.msg import TrafficLight
 
 class TLClassifier(object):
     # In Initialization, a boolean argument "is_site" should be added so that the classifier chooses which model it should use (simulation or site model)
-    def __init__(self):
+    def __init__(self,is_site):
         
         # Choose which model to work with
-        MODEL_NAME = 'light_classification/traffic_models/site_frozen_graph'
+        if(is_site):
+            MODEL_NAME = 'light_classification/traffic_models/site_frozen_graph' 
+        else:
+            MODEL_NAME = 'light_classification/traffic_models/sim_frozen_graph'
         
         # Store the last detected color (used for debug purposes/printing messages, could be deleted later)
         self.detected_color = None

@@ -55,7 +55,7 @@ class TLDetector(object):
         self.upcoming_red_light_pub = rospy.Publisher('/traffic_waypoint', Int32, queue_size=1)
 
         self.bridge = CvBridge()
-        self.light_classifier = TLClassifier()
+        self.light_classifier = TLClassifier(self.config['is_site'])
         self.listener = tf.TransformListener()
 
 
@@ -104,11 +104,14 @@ class TLDetector(object):
             msg (Image): image from car-mounted camera
 
         """
-        MIN_COUNTER = 3
+       
+        
+        #MIN_COUNTER = 3
         
         self.has_image = True
         self.camera_image = msg
-        
+        """
+        # This part of the code is not needed as self.get_classification is called by process traffic lights function
         # Call classifier when image is received. When merging branches together, this function should be called from get_light_state()
         last_detected_state = self.get_classification()
         if last_detected_state == self.last_classifier_state:
@@ -139,9 +142,10 @@ class TLDetector(object):
             if self.classifier_state != self.last_classifier_state:
                 rospy.loginfo('No traffic light detected')
                 self.classifier_state = self.last_classifier_state
-
+        """
         
         light_wp, state = self.process_traffic_lights()
+        rospy.loginfo("light_wp %d , state=%d",light_wp,state)
 
         '''
         Publish upcoming red lights at camera frequency.
