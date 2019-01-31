@@ -11,7 +11,6 @@ import tf
 import cv2
 import yaml
 from scipy.spatial import KDTree
-import numpy as np
 
 STATE_COUNT_THRESHOLD = 3 # 1 for testing, change back to 3
 
@@ -110,52 +109,59 @@ class TLDetector(object):
         self.has_image = True
         self.camera_image = msg
         
-        # Call classifier when image is received
+        # Call classifier when image is received. When merging branches together, this function should be called from get_light_state()
         last_detected_state = self.get_classification()
-        
-        # If last_detected_state is the same as the current light state of the detector node, increment the counter. Otherwise, reset it to 0 and actualize the current light state
         if last_detected_state == self.last_classifier_state:
             self.counter_classifier += 1
         else:
             self.counter_classifier = 0
-            self.last_classifier_state = last_detected_state
         
-        # Check the closest waypoint to stop the car if the light is red. 
-        # get_closest_waypoint_front() is used instead of get_closest_waypoint() to make sure that the returned waypoint is ahead of the vehicle
-        if not None in (self.pose,self.waypoint_tree):
-            car_wp_idx = self.get_closest_waypoint_front()
-        else:
-            # If no waypoint is found, set traffic light to unknown
-            self.last_classifier_state = TrafficLight.UNKNOWN
+        self.last_classifier_state = last_detected_state
+        
+        
+        #rospy.loginfo(self.counter_classifier)
+        #rospy.loginfo(last_detected_state)
         
         # Check how many times in the row the same color was detected. If it's more or equal to MIN_COUNTER, we update classifier_state with the actual color detected.
-        if self.counter_classifier == MIN_COUNTER:
-            if self.last_classifier_state == TrafficLight.GREEN:
-                if self.classifier_state != self.last_classifier_state:
-                    rospy.loginfo('Green light')
-                    self.classifier_state = self.last_classifier_state
-            elif self.last_classifier_state == TrafficLight.RED:
-                if self.classifier_state != self.last_classifier_state:
-                    rospy.loginfo('Red light')
-                    self.classifier_state = self.last_classifier_state
-            elif self.last_classifier_state == TrafficLight.YELLOW:
-                if self.classifier_state != self.last_classifier_state:
-                    rospy.loginfo('Yellow light')
-                    self.classifier_state = self.last_classifier_state
-            elif self.last_classifier_state == TrafficLight.UNKNOWN:
-                if self.classifier_state != self.last_classifier_state:
-                    rospy.loginfo('No traffic light detected')
-                    self.classifier_state = self.last_classifier_state
-            
-        # When if the counter is greater or equal to MIN_COUNTER, publish the closest waypoint ahead if traffic light is red
-        if self.counter_classifier >= MIN_COUNTER:
-            self.last_state = self.classifier_state
-            car_wp_idx = car_wp_idx if self.last_state == TrafficLight.RED else -1
-            self.last_wp = car_wp_idx
-            self.upcoming_red_light_pub.publish(Int32(car_wp_idx))
+        if self.last_classifier_state == TrafficLight.GREEN and self.counter_classifier == MIN_COUNTER:
+            if self.classifier_state != self.last_classifier_state:
+                rospy.loginfo('Green light')
+                self.classifier_state = self.last_classifier_state
+        elif self.last_classifier_state == TrafficLight.RED and self.counter_classifier == MIN_COUNTER:
+            if self.classifier_state != self.last_classifier_state:
+                rospy.loginfo('Red light')
+                self.classifier_state = self.last_classifier_state
+        elif self.last_classifier_state == TrafficLight.YELLOW and self.counter_classifier == MIN_COUNTER:
+            if self.classifier_state != self.last_classifier_state:
+                rospy.loginfo('Yellow light')
+                self.classifier_state = self.last_classifier_state
+        elif self.last_classifier_state == TrafficLight.UNKNOWN and self.counter_classifier == MIN_COUNTER:
+            if self.classifier_state != self.last_classifier_state:
+                rospy.loginfo('No traffic light detected')
+                self.classifier_state = self.last_classifier_state
+
+        
+        light_wp, state = self.process_traffic_lights()
+
+        '''
+        Publish upcoming red lights at camera frequency.
+        Each predicted state has to occur `STATE_COUNT_THRESHOLD` number
+        of times till we start using it. Otherwise the previous stable state is
+        used.
+        '''
+        if self.state != state:
+            self.state_count = 0
+            self.state = state
+        elif self.state_count >= STATE_COUNT_THRESHOLD:
+            self.last_state = self.state
+            light_wp = light_wp if (state == TrafficLight.RED or state == TrafficLight.YELLOW) else -1
+            # if above does not work, just try the below...
+            # light_wp = light_wp if state == TrafficLight.RED else -1
+            self.last_wp = light_wp
+            self.upcoming_red_light_pub.publish(Int32(light_wp))
         else:
             self.upcoming_red_light_pub.publish(Int32(self.last_wp))
-        
+        self.state_count += 1
 
     def get_closest_waypoint(self, x, y):
         """Identifies the closest path waypoint to the given position
@@ -171,28 +177,6 @@ class TLDetector(object):
         closest_idx = self.waypoint_tree.query([x, y], 1)[1]
         return closest_idx
 
-    # Check the closest waypoint in front of the car (get_closest_waypoint() could return a point behind the car)
-    def get_closest_waypoint_front(self):
-        x = self.pose.pose.position.x
-        y = self.pose.pose.position.y
-        closest_idx = self.waypoint_tree.query([x, y], 1)[1]
-
-        # check if closest is ahead or behind vehicle
-        closest_coord = self.waypoints_2d[closest_idx]
-        prev_coord = self.waypoints_2d[closest_idx - 1]
-
-        # equation for hyperplane through closest_coords
-        cl_vect = np.array(closest_coord)
-        prev_vect = np.array(prev_coord)
-        pos_vect = np.array([x, y])
-
-        val = np.dot(cl_vect - prev_vect, pos_vect - cl_vect)
-
-        if val > 0:
-            closest_idx = (closest_idx + 1) % len(self.waypoints_2d)
-
-        return closest_idx
-    
     def get_light_state(self, light):
         """Determines the current color of the traffic light
 
@@ -205,11 +189,11 @@ class TLDetector(object):
         """
 
         # For simulator testing, just return the light state
-        if self.config['is_site'] == False:
+        if self.config['is_site'] == False and self.use_classifier == False:
             return light.state
-        else
-            return TrafficLight.UNKNOWN # This condition is never supposed to happen
 
+        #Get classification
+        return self.get_classification()
     
     def get_classification(self):
         """Determines the current color of the traffic light
