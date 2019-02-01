@@ -24,6 +24,7 @@ class TLDetector(object):
         self.lights = []
         self.waypoints_2d = None
         self.waypoint_tree = None
+        self.call_classifier =0
         
         self.counter_classifier = 0
         self.classifier_state = TrafficLight.UNKNOWN
@@ -102,7 +103,11 @@ class TLDetector(object):
             msg (Image): image from car-mounted camera
 
         """
-        
+        self.call_classifier+=1
+        if (self.call_classifier % 4)!= 0:
+            rospy.loginfo("don't process image")
+            return 
+        rospy.loginfo("process image")
         self.has_image = True
         self.camera_image = msg
         

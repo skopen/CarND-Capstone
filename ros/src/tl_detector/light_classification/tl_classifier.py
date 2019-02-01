@@ -14,7 +14,7 @@ class TLClassifier(object):
         
         # Choose which model to work with
         if(is_site):
-            MODEL_NAME = 'light_classification/traffic_models/site_frozen_graph' 
+            MODEL_NAME = 'light_classification/traffic_models/sim_frozen_graph' 
         else:
             MODEL_NAME = 'light_classification/traffic_models/sim_frozen_graph'
         
