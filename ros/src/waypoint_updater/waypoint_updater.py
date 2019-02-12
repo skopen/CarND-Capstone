@@ -50,7 +50,7 @@ class WaypointUpdater(object):
         self.base_waypoints = None
         self.waypoints_2d = None
         self.waypoint_tree = None
-        self.stopline_wp_idx = -1
+        self.stopline_wp_idx = None
         self.max_speed=rospy.get_param('/waypoint_loader/velocity')*KPH_TO_MS
         rospy.loginfo("max speed %f",self.max_speed)
         self.max_stopping_dist =(self.max_speed**2)/(2*MAX_DEC)  
@@ -65,7 +65,7 @@ class WaypointUpdater(object):
     def loop(self):
         rate = rospy.Rate(RATE)
         while not rospy.is_shutdown():
-            if not None in (self.pose,self.base_waypoints,self.waypoint_tree):
+            if not None in (self.pose,self.base_waypoints,self.waypoint_tree,self.stopline_wp_idx):
                 # get closest waypoint
                 # closest_waypoint_idx = self.get_closest_waypoint_idx()
                 self.publish_waypoints()
