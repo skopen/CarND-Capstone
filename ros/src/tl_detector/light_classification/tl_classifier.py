@@ -15,8 +15,10 @@ class TLClassifier(object):
         # Choose which model to work with
         if(is_site):
             MODEL_NAME = 'light_classification/traffic_models/site_frozen_graph' 
+            rospy.loginfo("site model loaded")
         else:
             MODEL_NAME = 'light_classification/traffic_models/sim_frozen_graph'
+            rospy.loginfo("sim model loaded")
         
         # Store the last detected color (used for debug purposes/printing messages, could be deleted later)
         self.detected_color = None
@@ -56,6 +58,7 @@ class TLClassifier(object):
         # Determines the color of the traffic light in the image
         
         # Sets the minimum score (or desired probability) that the classifier's prediction should satisfy for considering the prediction as reliable.
+        rospy.loginfo("get classification called")
         THRESHOLD_SCORE = 0.45
         image_np = np.asarray(image, dtype="uint8")
         image_np_expanded = np.expand_dims(image_np, axis=0)
