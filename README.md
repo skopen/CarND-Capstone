@@ -7,15 +7,6 @@ This is the project repo for the final project of the Udacity Self-Driving Car N
 
 <img src="imgs/mission-peak.jpg" alt="Mission Peak" height= "250" width="600"/>
 
-
-| Name          | Udacity Email | Location  | Profile  |
-|:-------------| --------------  |:---------------|:---------------------|
-| Ahsan Habib <br> (Team Lead) | bibah.nasha@gmail.com |  Santa Clara, CA | <img src="imgs/ahsan.jpg" alt="Ahsan" height= "200" width="200"/> <br> [https://www.linkedin.com/in/habibahsan](https://www.linkedin.com/in/habibahsan/) |
-| Krishna  Koravadi |krishna.koravadi@gmail.com    | Rochester Hills, MI|  <img src="imgs/krishna.jpg" alt="Krishna" height= "200" width="200"/> <br> [https://www.linkedin.com/in/koravadi](https://www.linkedin.com/in/koravadi/)|
-| Mahmoud A Selim |  mahmoudahmedselim96@gmail.com |  Cairo, Egypt |         <img src="imgs/mahmoud.jpg" alt="Mahmoud" height= "200" width="200"/>      <br>    [https://www.linkedin.com/in/mahmoud-selim](https://www.linkedin.com/in/mahmoud-selim-325b49149/) |
-| Sarang Kulkarni | sarang.kulkarni@gmail.com | San Jose, CA       |    <img src="imgs/sarang.jpg" alt="Sarang" height= "200" width="200"/>  <br>  [https://www.linkedin.com/in/sarangkulkarni/](https://www.linkedin.com/in/sarangkulkarni/) |
-| Vincent Barrault | vincent.barrault@gmail.com | Frankfurt, Germany |  <img src="imgs/vincent.jpg" alt="Vincent" height= "200" width="200"/> <br>  [https://www.linkedin.com/in/vincent-barrault](https://www.linkedin.com/in/vincent-barrault-b41a065a/) |
-
 ## Simulation Video
 
 Here is the simulation run on highway that uses waypoint path planning, PID controller for controlling speed, steering, and throttle. In this simulation, traffic light waypoint is used to detect the status of light and the car is controlled to stop on red light and go on green. 
